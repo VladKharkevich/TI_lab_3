@@ -1,0 +1,241 @@
+<BtnOpenFile@Button>:
+	font_size: '22sp'
+	size_hint: 0.2, 0.45
+	pos_hint: {'top': 0.72}
+	text: '...'
+
+<ItemLabel@Label>:
+	font_size: '18sp'
+	halign: 'right'
+	valign: 'middle'
+
+
+<MyTextInput@TextInput>
+	font_size: '20sp'
+	size_hint_y: 0.3
+	multiline: False
+	readonly: True
+
+<MainScreen>:
+	size_hint_x: 0.9
+	size_hint_y: 0.97
+	pos_hint: {'center_x': 0.5, 'top': 1}
+	container: container
+
+	Container:
+		id: container
+		orientation: 'vertical'
+		halign: 'center'
+
+		input_file_name: input_file_name
+		key_p: key_p
+		key_q: key_q
+		close_key: close_key
+		type_of_code: type_of_code
+		lbl_error_file: lbl_error_file
+		lbl_error_key_p: lbl_error_key_p
+		lbl_error_key_q: lbl_error_key_q
+		lbl_error_close_key: lbl_error_close_key
+		lbl_error_key_r: lbl_error_key_r
+		output_text: output_text
+		output_key: output_key
+		input_text: input_text
+		lbl_p: lbl_p
+		lbl_q: lbl_q
+		lbl_close_key: lbl_close_key
+
+		BoxLayout:
+
+			ItemLabel:
+				text: 'Исходный файл'
+			
+			BoxLayout:
+				orientation: 'vertical'
+
+				Widget:
+					size_hint_y: 0.2
+
+				MyTextInput:
+					id: input_file_name
+					pos_hint: {'center': 0}
+					on_text:
+						root.container.lbl_error_file.color = (0, 0, 0, 1)
+					
+				Label:
+					id: lbl_error_file
+					text: 'Нужен текстовый файл!'
+					color: (0, 0, 0, 1)
+					size_hint_y: 0.2
+
+			BtnOpenFile:
+				id: btn_open_file
+				on_release:
+					root.manager.current = 'filechooser'
+					root.manager.get_screen('filechooser').choosing_file.path = self.get_path()
+					root.manager.get_screen('filechooser').choosing_file.selection = []
+
+			MethodSpinner:
+				pos_hint: {'top': 0.72}
+				size_hint_y: 0.5
+				valign: 'middle'
+				text: 'Шифрование'
+				values: 'Шифрование', 'Дешифрование'
+				id: type_of_code
+				on_text:
+					self.clean_input()
+
+		BoxLayout:
+
+			ItemLabel:
+				id: lbl_p
+				text: 'Число р'
+				pos_hint: {'right': 1}
+
+			BoxLayout:
+				orientation: 'vertical'
+
+				Widget:
+					size_hint_y: 0.2
+
+				InputKey:
+					font_size: '18sp'
+					size_hint_y: 0.25
+					multiline: False
+					pos_hint: {'top': 0.6}
+					id: key_p
+					on_text:
+						root.container.lbl_error_key_p.color = (0, 0, 0, 1)
+						root.container.lbl_error_key_r.color = (0, 0, 0, 1)
+
+				Label:
+					id: lbl_error_key_p
+					text: 'Ключ неверный!'
+					color: (0, 0, 0, 1)
+					size_hint_y: 0.2
+
+		BoxLayout:
+
+			ItemLabel:
+				id: lbl_q
+				text: 'Число q'
+				pos_hint: {'right': 1}
+
+			BoxLayout:
+				orientation: 'vertical'
+
+				Widget:
+					size_hint_y: 0.2
+
+				InputKey:
+					font_size: '18sp'
+					size_hint_y: 0.25
+					multiline: False
+					pos_hint: {'top': 0.6}
+					id: key_q
+					on_text:
+						root.container.lbl_error_key_q.color = (0, 0, 0, 1)
+						root.container.lbl_error_key_r.color = (0, 0, 0, 1)
+
+				Label:
+					id: lbl_error_key_q
+					text: 'Ключ неверный!'
+					color: (0, 0, 0, 1)
+					size_hint_y: 0.2
+
+		BoxLayout:
+
+			ItemLabel:
+				id: lbl_close_key
+				text: 'Закрытый ключ'
+				pos_hint: {'right': 1}
+
+			BoxLayout:
+				orientation: 'vertical'
+
+				Widget:
+					size_hint_y: 0.2
+
+				InputKey:
+					font_size: '18sp'
+					size_hint_y: 0.25
+					multiline: False
+					pos_hint: {'top': 0.6}
+					id: close_key
+					on_text:
+						root.container.lbl_error_close_key.color = (0, 0, 0, 1)
+
+				Label:
+					id: lbl_error_close_key
+					text: 'Ключ неверный!'
+					color: (0, 0, 0, 1)
+					size_hint_y: 0.2
+
+		BoxLayout:
+			spacing: 6
+
+			BoxLayout:
+				orientation: 'vertical'
+				
+				ItemLabel:
+					size_hint_y: 0.2
+					text: 'Исходный текст'
+				
+				TextInput:
+					id: input_text
+					readonly: True
+
+			BoxLayout:
+				orientation: 'vertical'
+
+				Widget:
+					size_hint_y: 0.2
+
+				Button:
+					size_hint: 1, 0.3
+					pos_hint: {'top': 0.5}
+					text: 'Решить'
+					on_release:
+						root.container.start()
+
+				Label:
+					id: lbl_error_key_r
+					text: 'p*q  должно быть больше 255'
+					color: (0, 0, 0, 1)
+					size_hint_y: 0.2
+
+
+		BoxLayout:
+
+			BoxLayout:
+				orientation: 'vertical'
+				
+				ItemLabel:
+					size_hint_y: 0.2
+					text: 'Ключ'
+				
+				TextInput:
+					id: output_key
+					readonly: True
+
+			BoxLayout:
+				orientation: 'vertical'
+
+				ItemLabel:
+					size_hint_y: 0.2
+					text: 'Конечный текст'
+				
+				TextInput:
+					id: output_text
+					readonly: True
+
+		
+
+
+<FileChooserScreen>:
+
+	choosing_file: choosing_file
+
+	ChoosingFile:
+		id: choosing_file
+		on_selection:
+			self.fill_text()
